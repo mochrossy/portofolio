@@ -34,6 +34,6 @@ Route::get('/blog/{post:slug}', function (Post $post) {
 | Admin — CRUD Post
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('posts', PostController::class);
-});
+//Route::prefix('admin')->name('admin.')->group(function () {
+//    Route::resource('posts', PostController::class);
+//});
