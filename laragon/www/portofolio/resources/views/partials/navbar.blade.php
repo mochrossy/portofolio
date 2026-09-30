@@ -34,12 +34,12 @@
                     </li>
 
                     <li class="group pl-6">
-                        <span @click="triggerNavItem('#portfolio')"
-                              class="cursor-pointer pt-0.5 font-header font-semibold uppercase text-white">
-                            Portfolio
-                        </span>
-                        <span class="block h-0.5 w-full bg-transparent group-hover:bg-yellow"></span>
-                    </li>
+    <a href="{{ route('portfolio.index') }}"
+       class="cursor-pointer pt-0.5 font-header font-semibold uppercase text-white hover:text-yellow">
+        Portfolio
+    </a>
+    <span class="block h-0.5 w-full bg-transparent group-hover:bg-yellow"></span>
+</li>
 
                     <li class="group pl-6">
                         <span @click="triggerNavItem('#clients')"

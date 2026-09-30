@@ -9,7 +9,24 @@ class Portfolio extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'slug', 'description', 'image', 'category', 'order'];
+    protected $fillable = [
+        'title',
+        'slug',
+        'duration',
+        'description',
+        'result',
+        'tech_stack',
+        'image',
+        'category',
+        'client_name',
+        'completed_at',
+        'order',
+    ];
+
+    protected $casts = [
+        'tech_stack' => 'array',
+        'completed_at' => 'date',
+    ];
 
     public function getRouteKeyName(): string
     {

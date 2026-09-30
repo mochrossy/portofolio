@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\PostController;
+use App\Models\Portfolio;
 use App\Models\Post;
+use App\Models\Project;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -11,7 +12,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('home', [
+        'posts'         => Post::latest('published_at')->take(3)->get(),
+        'portfolios'    => Portfolio::orderBy('order')->take(6)->get(),
+        'skills'        => \App\Models\Skill::orderBy('order')->get(),
+        'clients'       => \App\Models\Client::orderBy('order')->get(),
+        'projectsCount' => Project::count(),
+        'clientsCount'  => \App\Models\Client::count(),
+        'postsCount'    => Post::count(),
+    ]);
 })->name('home');
 
 /*
@@ -31,21 +40,49 @@ Route::get('/blog/{post:slug}', function (Post $post) {
 
 /*
 |--------------------------------------------------------------------------
-| Admin — CRUD Post
+| Portfolio (Public)
 |--------------------------------------------------------------------------
 */
-//Route::prefix('admin')->name('admin.')->group(function () {
-//    Route::resource('posts', PostController::class);
-//});
-// update route untuk resource
-Route::get('/', function () {
-    return view('home', [
-        'posts'       => \App\Models\Post::latest('published_at')->take(3)->get(),
-        'portfolios'  => \App\Models\Portfolio::orderBy('order')->get(),
-        'skills'      => \App\Models\Skill::orderBy('order')->get(),
-        'clients'     => \App\Models\Client::orderBy('order')->get(),
-        'projectsCount' => \App\Models\Project::count(),
-        'clientsCount'  => \App\Models\Client::count(),
-        'postsCount'    => \App\Models\Post::count(),
+Route::get('/portfolio', function () {
+    $category = request('category');
+
+    $query = Portfolio::orderBy('order');
+    if ($category) {
+        $query->where('category', $category);
+    }
+
+    return view('pages.portfolio.index', [
+        'portfolios' => $query->get(),
+        'categories' => Portfolio::select('category')->distinct()->pluck('category'),
+        'activeCategory' => $category,
     ]);
-})->name('home');
+})->name('portfolio.index');
+
+Route::get('/portfolio/{portfolio:slug}', function (Portfolio $portfolio) {
+    $related = Portfolio::where('id', '!=', $portfolio->id)
+        ->where('category', $portfolio->category)
+        ->orderBy('order')
+        ->take(3)
+        ->get();
+
+    return view('pages.portfolio.show', [
+        'portfolio' => $portfolio,
+        'related' => $related,
+    ]);
+})->name('portfolio.show');
+/*
+|--------------------------------------------------------------------------
+| Project (Public)
+|--------------------------------------------------------------------------
+*/
+Route::get('/project/{project:slug}', function (Project $project) {
+    $otherProjects = Project::where('id', '!=', $project->id)
+        ->orderBy('order')
+        ->take(3)
+        ->get();
+
+    return view('pages.project.show', [
+        'project' => $project,
+        'otherProjects' => $otherProjects,
+    ]);
+})->name('project.show');

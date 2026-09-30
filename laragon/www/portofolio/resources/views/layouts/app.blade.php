@@ -1,19 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="utf-8" />
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
-
-    <title>@yield('title', 'Homepage | Atom Template')</title>
-
-    <meta property="og:title" content="@yield('og_title', 'Homepage | Atom Template')" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:url" content="{{ url()->current() }}" />
-    <meta name="description" content="@yield('description', 'Portofolio & blog pribadi')" />
-    <meta name="theme-color" content="#5540af" />
-
-    <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}" />
+    @include('partials.meta')
 
     {{-- Fonts --}}
     <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -26,13 +14,13 @@
     {{-- Boxicons --}}
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
 
-    {{-- Styles Template Atom (pre-compiled) --}}
+    {{-- Styles --}}
     <link crossorigin="anonymous"
           href="{{ asset('assets/styles/main.min.css') }}"
           media="screen"
           rel="stylesheet" />
 
-    {{-- Alpine.js (diperlukan untuk interaksi navbar) --}}
+    {{-- Alpine.js --}}
     <script defer src="https://unpkg.com/@alpine-collective/toolkit@1.0.0/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
