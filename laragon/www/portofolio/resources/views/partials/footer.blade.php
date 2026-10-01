@@ -19,6 +19,9 @@
             <a href="#" class="pl-4">
                 <i class="bx bxl-instagram text-2xl text-white hover:text-yellow"></i>
             </a>
+            <a href="{{ route('feed') }}" class="pl-4" title="RSS Feed">
+    <i class="bx bx-rss text-2xl text-white hover:text-yellow"></i>
+</a>
         </div>
     </div>
 </div>

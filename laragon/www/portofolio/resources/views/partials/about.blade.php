@@ -1,3 +1,4 @@
+
 <div class="bg-grey-50" id="about">
     <div class="container flex flex-col items-center py-16 md:py-20 lg:flex-row">
 
@@ -7,14 +8,10 @@
                 Who am I?
             </h2>
             <h4 class="pt-6 font-header text-xl font-medium text-black sm:text-2xl lg:text-3xl">
-                I'm Moch. Rossy Avian I., a System Administrator, DevOps and Fullstack learner
+                I'm Moch. Rossy Avian I., a System Engineer, DevOps and CloudeCode learner
             </h4>
             <p class="pt-6 font-body leading-relaxed text-grey-20">
-                Saya seorang profesional di bidang IT dengan pengalaman dalam implementasi
-                infrastruktur server, mail server, dan pengembangan aplikasi web. Fokus saya
-                adalah membangun solusi yang handal, aman, dan mudah dipelihara — mulai dari
-                konfigurasi Linux server hingga pengembangan aplikasi dengan Laravel dan
-                Filament.
+                Senior IT Consultant & DevOps Project Leader with over 19 years of expertise spanning IT infrastructure, database engineering, and enterprise project delivery. Proven track record of architecting resilient system solutions and leading nationwide infrastructure rollouts for major financial, mining, and telecommunications organizations. Hands-on technical mastery in DevOps containerization (Docker), database migrations (MS SQL to MariaDB), and reverse proxy optimization, combined with strong strategic leadership in ITSM, DRP/BCP, and cross-functional team management. Adept at bridging technical operations with business objectives to maximize system performance, security, and uptime.
             </p>
 
             {{-- Sosial media --}}

@@ -1,7 +1,9 @@
 @extends('layouts.public')
 
 @section('title', $portfolio->title)
-@section('description', $portfolio->description)
+@section('description', \Illuminate\Support\Str::limit($portfolio->description, 155))
+@section('og_image', $portfolio->image ? asset('storage/' . $portfolio->image) : asset('assets/img/social.jpg'))
+@section('og_type', 'article')
 
 @section('content')
 

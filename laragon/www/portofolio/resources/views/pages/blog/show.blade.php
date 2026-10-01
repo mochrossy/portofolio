@@ -1,8 +1,12 @@
 @extends('layouts.blog')
 
 @section('title', $post->title)
+@section('description', $post->excerpt)
+@section('og_image', $post->image ? asset('storage/' . $post->image) : asset('assets/img/social.jpg'))
+@section('og_type', 'article')
 @section('page-title', $post->title)
-@section('page-subtitle', $post->published_at?->format('d M Y') . ' · ' . $post->category)
+@section('page-subtitle', $post->published_at?->format('d M Y') . ' · ' . $post->category')
+
 
 @section('content')
 
@@ -33,3 +37,21 @@
     </div>
 
 @endsection
+
+@push('styles')
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "{{ $post->title }}",
+    "description": "{{ $post->excerpt }}",
+    "image": "{{ asset('storage/' . $post->image) }}",
+    "datePublished": "{{ $post->published_at?->toAtomString() }}",
+    "dateModified": "{{ $post->updated_at->toAtomString() }}",
+    "author": {
+        "@type": "Person",
+        "name": "{{ $post->author }}"
+    }
+}
+</script>
+@endpush

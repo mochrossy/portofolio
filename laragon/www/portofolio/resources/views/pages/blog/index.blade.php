@@ -6,6 +6,28 @@
 
 @section('content')
 
+{{-- Search --}}
+<form action="{{ route('blog.index') }}" method="GET" class="mb-8">
+    <div class="flex gap-2">
+        <input
+            type="text"
+            name="q"
+            value="{{ $search ?? '' }}"
+            placeholder="Cari artikel..."
+            class="w-full rounded border-grey-50 px-4 py-3 font-body text-black focus:border-primary focus:outline-none"
+        />
+        <button type="submit"
+                class="rounded bg-primary px-6 py-3 font-header text-sm font-bold uppercase text-white hover:bg-grey-20">
+            <i class="bx bx-search"></i>
+        </button>
+    </div>
+    @if($search ?? false)
+        <p class="mt-2 font-body text-sm text-grey-40">
+            Hasil pencarian untuk: <strong>{{ $search }}</strong>
+            · <a href="{{ route('blog.index') }}" class="text-primary hover:text-yellow">Reset</a>
+        </p>
+    @endif
+</form>
     {{-- Daftar post — sementara hardcoded --}}
     @php
         $posts = [

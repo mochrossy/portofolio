@@ -13,6 +13,7 @@
 
                 <div class="relative">
                     <img src="{{ asset('storage/' . $portfolio->image) }}"
+                         loading="lazy"
                          class="w-full"
                          alt="{{ $portfolio->title }}" />
 

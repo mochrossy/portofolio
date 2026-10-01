@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\ContactController;
+use App\Models\Client;
 use App\Models\Portfolio;
 use App\Models\Post;
 use App\Models\Project;
+use App\Models\Skill;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,10 +19,10 @@ Route::get('/', function () {
     return view('home', [
         'posts'         => Post::latest('published_at')->take(3)->get(),
         'portfolios'    => Portfolio::orderBy('order')->take(6)->get(),
-        'skills'        => \App\Models\Skill::orderBy('order')->get(),
-        'clients'       => \App\Models\Client::orderBy('order')->get(),
+        'skills'        => Skill::orderBy('order')->get(),
+        'clients'       => Client::orderBy('order')->get(),
         'projectsCount' => Project::count(),
-        'clientsCount'  => \App\Models\Client::count(),
+        'clientsCount'  => Client::count(),
         'postsCount'    => Post::count(),
     ]);
 })->name('home');
@@ -29,8 +33,20 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 Route::get('/blog', function () {
+    $search = request('q');
+
+    $query = Post::latest('published_at');
+    if ($search) {
+        $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+                ->orWhere('excerpt', 'like', "%{$search}%")
+                ->orWhere('body', 'like', "%{$search}%");
+        });
+    }
+
     return view('pages.blog.index', [
-        'posts' => Post::latest('published_at')->get(),
+        'posts'  => $query->get(),
+        'search' => $search,
     ]);
 })->name('blog.index');
 
@@ -52,8 +68,8 @@ Route::get('/portfolio', function () {
     }
 
     return view('pages.portfolio.index', [
-        'portfolios' => $query->get(),
-        'categories' => Portfolio::select('category')->distinct()->pluck('category'),
+        'portfolios'     => $query->get(),
+        'categories'     => Portfolio::select('category')->distinct()->pluck('category'),
         'activeCategory' => $category,
     ]);
 })->name('portfolio.index');
@@ -67,9 +83,10 @@ Route::get('/portfolio/{portfolio:slug}', function (Portfolio $portfolio) {
 
     return view('pages.portfolio.show', [
         'portfolio' => $portfolio,
-        'related' => $related,
+        'related'   => $related,
     ]);
 })->name('portfolio.show');
+
 /*
 |--------------------------------------------------------------------------
 | Project (Public)
@@ -82,7 +99,37 @@ Route::get('/project/{project:slug}', function (Project $project) {
         ->get();
 
     return view('pages.project.show', [
-        'project' => $project,
+        'project'       => $project,
         'otherProjects' => $otherProjects,
     ]);
 })->name('project.show');
+
+/*
+|--------------------------------------------------------------------------
+| Contact Form
+|--------------------------------------------------------------------------
+*/
+Route::post('/contact', [ContactController::class, 'send'])
+    ->name('contact.send');
+
+/*
+|--------------------------------------------------------------------------
+| Sitemap & RSS Feed
+|--------------------------------------------------------------------------
+*/
+Route::get('/sitemap.xml', function () {
+    $posts = Post::latest('published_at')->get();
+    $portfolios = Portfolio::orderBy('order')->get();
+
+    return response()
+        ->view('sitemap', compact('posts', 'portfolios'))
+        ->header('Content-Type', 'application/xml');
+})->name('sitemap');
+
+Route::get('/feed.xml', function () {
+    $posts = Post::latest('published_at')->take(20)->get();
+
+    return response()
+        ->view('feed', compact('posts'))
+        ->header('Content-Type', 'application/rss+xml; charset=UTF-8');
+})->name('feed');
