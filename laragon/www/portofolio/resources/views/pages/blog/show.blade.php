@@ -4,30 +4,36 @@
 @section('description', $post->excerpt)
 @section('og_image', $post->image ? asset('storage/' . $post->image) : asset('assets/img/social.jpg'))
 @section('og_type', 'article')
-@section('page-title', $post->title)
-@section('page-subtitle', $post->published_at?->format('d M Y') . ' · ' . $post->category')
 
+@section('page-title', $post->title)
+@section('page-subtitle', $post->published_at?->format('d M Y') . ' · ' . $post->category)
 
 @section('content')
 
     <article class="prose max-w-none">
+
+        {{-- Gambar Utama --}}
         @if($post->image)
-            <img src="{{ asset($post->image) }}"
+            <img src="{{ asset('storage/' . $post->image) }}"
                  alt="{{ $post->title }}"
                  class="mb-8 w-full rounded-lg shadow" />
         @endif
 
+        {{-- Meta Info --}}
         <div class="mb-6 flex flex-wrap items-center gap-4 border-b border-grey-50 pb-6 text-sm text-grey-40">
             <span><i class="bx bx-user"></i> {{ $post->author }}</span>
             <span><i class="bx bx-calendar"></i> {{ $post->published_at?->format('d M Y') }}</span>
             <span><i class="bx bx-purchase-tag"></i> {{ $post->category }}</span>
         </div>
 
+        {{-- Body Post --}}
         <div class="font-body leading-relaxed text-grey-20">
             {!! $post->body !!}
         </div>
+
     </article>
 
+    {{-- Tombol Kembali --}}
     <div class="mt-12 border-t border-grey-50 pt-6">
         <a href="{{ route('blog.index') }}"
            class="inline-flex items-center font-header font-bold uppercase text-primary hover:text-yellow">
@@ -37,21 +43,3 @@
     </div>
 
 @endsection
-
-@push('styles')
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "{{ $post->title }}",
-    "description": "{{ $post->excerpt }}",
-    "image": "{{ asset('storage/' . $post->image) }}",
-    "datePublished": "{{ $post->published_at?->toAtomString() }}",
-    "dateModified": "{{ $post->updated_at->toAtomString() }}",
-    "author": {
-        "@type": "Person",
-        "name": "{{ $post->author }}"
-    }
-}
-</script>
-@endpush

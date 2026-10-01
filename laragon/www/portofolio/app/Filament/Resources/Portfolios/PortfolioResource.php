@@ -79,10 +79,14 @@ class PortfolioResource extends Resource
                 ->required(),
 
             FileUpload::make('image')
-                ->label('Gambar Utama')
+                ->label('Gambar Portfolio')
                 ->image()
                 ->directory('portfolios')
                 ->imagePreviewHeight('200')
+                ->imageResizeMode('cover')
+                ->imageCropAspectRatio('16:9')
+                ->imageResizeTargetWidth('1200')
+                ->imageResizeTargetHeight('675')
                 ->maxSize(2048)
                 ->required()
                 ->columnSpanFull(),

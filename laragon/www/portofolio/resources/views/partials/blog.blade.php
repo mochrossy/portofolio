@@ -9,21 +9,33 @@
 
         <div class="mx-auto grid w-full grid-cols-1 gap-6 pt-12 sm:w-3/4 lg:w-full lg:grid-cols-3 xl:gap-10">
             @forelse($posts as $post)
-                <a href="{{ route('blog.show', $post) }}" class="shadow">
-                    <div style="background-image: url('{{ asset('storage/' . $post->image) }}')"
-                         class="group relative h-72 bg-cover bg-center bg-no-repeat sm:h-84 lg:h-64 xl:h-72">
-                        <span class="absolute inset-0 block bg-gradient-to-b from-blog-gradient-from to-blog-gradient-to bg-cover bg-center bg-no-repeat opacity-10 transition-opacity group-hover:opacity-50"></span>
-                        <span class="absolute right-0 bottom-0 mr-4 mb-4 block rounded-full border-2 border-white px-6 py-2 text-center font-body text-sm font-bold uppercase text-white md:text-base">
+                <a href="{{ route('blog.show', $post) }}"
+                   class="group block overflow-hidden rounded-lg bg-white shadow transition-all hover:-translate-y-1 hover:shadow-xl">
+
+                    {{-- Gambar Thumbnail --}}
+                    <div class="relative h-56 overflow-hidden bg-grey-50">
+                        <img src="{{ asset('storage/' . $post->image) }}"
+                             alt="{{ $post->title }}"
+                             loading="lazy"
+                             class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+
+                        <span class="absolute right-4 bottom-4 rounded-full border-2 border-white px-5 py-2 text-center font-body text-xs font-bold uppercase text-white md:text-sm">
                             Read More
                         </span>
                     </div>
-                    <div class="bg-white py-6 px-5 xl:py-8">
-                        <span class="block font-body text-lg font-semibold text-black">
+
+                    {{-- Konten --}}
+                    <div class="p-6">
+                        <span class="block font-body text-lg font-semibold text-black group-hover:text-primary">
                             {{ $post->title }}
                         </span>
-                        <span class="block pt-2 font-body text-grey-20">
-                            {{ $post->excerpt }}
+                        <span class="mt-2 block font-body text-sm text-grey-20">
+                            {{ \Illuminate\Support\Str::limit($post->excerpt, 120) }}
                         </span>
+                        <div class="mt-4 flex items-center justify-between text-xs text-grey-40">
+                            <span>{{ $post->published_at?->format('d M Y') }}</span>
+                            <span class="font-bold uppercase text-primary">{{ $post->category }}</span>
+                        </div>
                     </div>
                 </a>
             @empty

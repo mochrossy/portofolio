@@ -32,6 +32,9 @@ class ClientResource extends Resource
             FileUpload::make('logo')
                 ->image()
                 ->directory('clients')
+                ->imageResizeTargetWidth('400')
+                ->imageResizeTargetHeight('200')
+                ->maxSize(512)
                 ->required(),
 
             TextInput::make('website_url')

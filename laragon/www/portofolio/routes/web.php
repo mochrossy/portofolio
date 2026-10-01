@@ -133,3 +133,11 @@ Route::get('/feed.xml', function () {
         ->view('feed', compact('posts'))
         ->header('Content-Type', 'application/rss+xml; charset=UTF-8');
 })->name('feed');
+/*
+|--------------------------------------------------------------------------
+| Anti Spam form contact
+|--------------------------------------------------------------------------
+*/
+Route::post('/contact', [ContactController::class, 'send'])
+    ->middleware('throttle:5,1')  // 5 request per menit
+    ->name('contact.send');

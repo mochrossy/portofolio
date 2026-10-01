@@ -1,0 +1,1 @@
+<?php /**PATH H:\Workspace\laragon\www\portofolio\resources\views/partials/work.blade.php ENDPATH**/ ?>
